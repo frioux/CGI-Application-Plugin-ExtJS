@@ -7,16 +7,16 @@ use FindBin;
 use lib "$FindBin::Bin/../lib";
 use lib "$FindBin::Bin/lib";
 
-BEGIN { use_ok('CAPDBICTest::Schema') };
+BEGIN { use_ok('CAPExtTest::Schema') };
 BEGIN {
    $ENV{CGI_APP_RETURN_ONLY} = 1;
-   use_ok('CAPDBICTest::CGIApp');;
+   use_ok('CAPExtTest::CGIApp');;
 };
 
-my $t1_obj = CAPDBICTest::CGIApp->new();
+my $t1_obj = CAPExtTest::CGIApp->new();
 my $t1_output = $t1_obj->run();
 
-my $schema = CAPDBICTest::Schema->connect( $CAPDBICTest::CGIApp::CONNECT_STR );
+my $schema = CAPExtTest::Schema->connect( $CAPExtTest::CGIApp::CONNECT_STR );
 $schema->deploy();
 $schema->populate(Stations => [
    [qw{id bill    ted       }],
@@ -33,7 +33,6 @@ $schema->populate(Stations => [
 
 ok $t1_obj->schema->resultset('Stations'), 'resultset correctly found';
 
-# paginate
 {
    $t1_obj->query->param(limit => 3);
    my $paginated =
@@ -60,7 +59,6 @@ ok $t1_obj->schema->resultset('Stations'), 'resultset correctly found';
    $t1_obj->query->delete_all;
 }
 
-# paginate
 {
    $t1_obj->query->param(limit => 3);
    my $paginated =
@@ -88,5 +86,35 @@ ok $t1_obj->schema->resultset('Stations'), 'resultset correctly found';
    $t1_obj->query->delete_all;
 }
 
+{
+   my $data =
+   $t1_obj->ext_parcel(
+      [qw{foo bar baz}]
+   );
+   cmp_deeply $data,
+	      {
+		 total => 3,
+		 data=> [qw{foo bar baz}],
+	      },
+	      'ext_parcel correctly parcels and defaults data';
+}
+
+
+{
+   my $data =
+   $t1_obj->ext_parcel(
+      [qw{foo bar baz}], 5
+   );
+   cmp_deeply $data,
+	      {
+		 total => 5,
+		 data=> [qw{foo bar baz}],
+	      },
+	      'ext_parcel correctly parcels data';
+}
+
+
+
+
 done_testing;
-END { unlink $CAPDBICTest::CGIApp::DBFILE };
+END { unlink $CAPExtTest::CGIApp::DBFILE };

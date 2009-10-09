@@ -1,4 +1,4 @@
-package CAPDBICTest::Schema;
+package CAPExtTest::Schema;
 use parent 'DBIx::Class::Schema';
 
 __PACKAGE__->load_namespaces();

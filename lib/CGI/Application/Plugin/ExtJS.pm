@@ -9,17 +9,27 @@ require Exporter;
 
 use base qw(Exporter AutoLoader);
 
-our @EXPORT_OK   = qw(&ext_paginate);
+our @EXPORT_OK   = qw(&ext_paginate &ext_parcel);
 our %EXPORT_TAGS = (all => [@EXPORT_OK]);
 
 sub ext_paginate {
-   my $self     = shift;
+   my $self      = shift;
    my $resultset = shift;
-   my $method = shift || 'TO_JSON';
-   # param names should be configurable
+   my $method    = shift || 'TO_JSON';
+   return $self->ext_parcel(
+      [map $_->$method, $resultset->all],
+      $resultset->pager->total_entries,
+   );
+}
+
+sub ext_parcel {
+   my $self   = shift;
+   my $values = shift;
+   my $total  = shift || scalar @{$values};
+
    return {
-      data => [map $_->$method, $resultset->all],
-      total => $resultset->pager->total_entries,
+      data  => $values,
+      total => $total,
    };
 }
 

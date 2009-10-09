@@ -1,4 +1,4 @@
-package CAPDBICTest::CGIApp;
+package CAPExtTest::CGIApp;
 use strict;
 use warnings;
 
@@ -6,7 +6,7 @@ use parent 'CGI::Application';
 
 use Readonly;
 use CGI::Application::Plugin::DBH (qw/dbh_config dbh/);
-use CAPDBICTest::Schema;
+use CAPExtTest::Schema;
 use CGI::Application::Plugin::DBIx::Class ':all';
 use CGI::Application::Plugin::ExtJS ':all';
 
@@ -19,7 +19,7 @@ sub cgiapp_init {
   $self->dbh_config( $CONNECT_STR );
 
   $self->dbic_config({
-     schema => 'CAPDBICTest::Schema',
+     schema => 'CAPExtTest::Schema',
   });
 }
 
@@ -32,8 +32,7 @@ sub setup {
 }
 
 sub test_mode {
-  my $self = shift;
-  return 1;
+   return 1;
 }
 
 1;

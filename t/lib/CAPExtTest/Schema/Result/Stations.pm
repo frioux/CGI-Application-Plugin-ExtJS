@@ -1,4 +1,4 @@
-package CAPDBICTest::Schema::Result::Stations;
+package CAPExtTest::Schema::Result::Stations;
 use parent 'DBIx::Class';
 use strict;
 use warnings;
