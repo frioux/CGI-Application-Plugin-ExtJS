@@ -1,5 +1,7 @@
 Revision history for CGI-Application-Plugin-ExtJS
 
+       - Added check to do the right thing if $rs is not paginated
+
 0.092820 Fri Oct 09 00:13:00 CDT 2009
        - Initial Release
 

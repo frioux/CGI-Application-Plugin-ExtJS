@@ -18,7 +18,9 @@ sub ext_paginate {
    my $method    = shift || 'TO_JSON';
    return $self->ext_parcel(
       [map $_->$method, $resultset->all],
-      $resultset->pager->total_entries,
+      $resultset->is_paged
+         ? ($resultset->pager->total_entries)
+         : (),
    );
 }
 
