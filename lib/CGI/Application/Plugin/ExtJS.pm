@@ -39,7 +39,7 @@ sub ext_parcel {
 
 =head1 SYNOPSIS
 
-  use CGI::Application::Plugin::ExtJS 'ext_paginate';
+  use CGI::Application::Plugin::ExtJS ':all';
 
   sub people {
      # ...
@@ -67,10 +67,26 @@ sub ext_parcel {
      # ...
   }
 
+  sub programmers_do_it_by_hand {
+     # ...
+     my $data = [qw{foo bar baz}];
+     my $total = 10;
+     my $json = $self->ext_parcel($data, $total);
+     # ...
+  }
+
+  # defaults total to amount of items passed in
+  sub some_programmers_do_it_by_hand_partially {
+     # ...
+     my $data = [qw{foo bar baz}];
+     my $json = $self->ext_parcel($data);
+     # ...
+  }
+
 
 =head1 DESCRIPTION
 
-This module is mostly for sending paginated data to ExtJS based javascript code.
+This module is mostly for sending L<DBIx::Class> paginated data to ExtJS based javascript code.
 
 =head1 METHODS
 
@@ -94,6 +110,28 @@ Returns a structure like the following from the ResultSet:
 
   rs      - paginated ResultSet to get the data from
   coderef - any valid scalar that can be called on the result object
+
+=head2 ext_parcel
+
+  my $items    = [qw{foo bar baz}];
+  my $total    = 7;
+  my $json     = $self->ext_parcel($data, $total);
+  my $json_str = to_json($json);
+
+=head3 Description
+
+Returns a structure like the following:
+
+  {
+     data  => [@{$items}],
+     total => $total || scalar @{$items}
+  }
+
+=head3 Valid arguments are:
+
+  list  - a list of anything you want to be in the data structure
+  total - whatever you want to say the total is.  Defaults to size of
+          the list passed in.
 
 =head1 SEE ALSO
 
