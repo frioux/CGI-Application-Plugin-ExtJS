@@ -16,8 +16,11 @@ sub ext_paginate {
    my $self      = shift;
    my $resultset = shift;
    my $method    = shift || 'TO_JSON';
+   my $rows = $resultset->result_class =~ /::HashRefInflator$/ ?
+      [ $resultset->all ] :
+      [map $_->$method, $resultset->all];
    return $self->ext_parcel(
-      [map $_->$method, $resultset->all],
+      $rows,
       $resultset->is_paged
          ? ($resultset->pager->total_entries)
          : (),
