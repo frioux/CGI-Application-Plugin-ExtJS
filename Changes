@@ -1,5 +1,8 @@
 Revision history for CGI-Application-Plugin-ExtJS
 
+{{$NEXT}}
+
+1.000000  2012-11-09 17:21:38 CST6CDT
        - Make HRI "just work"
 
 0.093200 Mon Nov 16 20:23:00 CDT 2009
