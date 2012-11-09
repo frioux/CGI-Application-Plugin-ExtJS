@@ -1,5 +1,7 @@
 Revision history for CGI-Application-Plugin-ExtJS
 
+       - Make HRI "just work"
+
 0.093200 Mon Nov 16 20:23:00 CDT 2009
        - Fixed deps
        - Added check to do the right thing if $rs is not paginated

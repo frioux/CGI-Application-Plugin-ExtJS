@@ -6,6 +6,7 @@ use strict;
 use warnings;
 
 require Exporter;
+use Scalar::Util 'blessed';
 
 use base qw(Exporter AutoLoader);
 
@@ -17,7 +18,7 @@ sub ext_paginate {
    my $resultset = shift;
    my $method    = shift || 'TO_JSON';
    return $self->ext_parcel(
-      [map $_->$method, $resultset->all],
+      [map { blessed($_) ? $_->$method : $_ } $resultset->all],
       $resultset->is_paged
          ? ($resultset->pager->total_entries)
          : (),
